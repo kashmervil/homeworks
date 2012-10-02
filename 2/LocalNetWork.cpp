@@ -14,10 +14,9 @@ public:
 	{}
 	int getSec()
 	{
-		return security;
-				//value from 1 to 5 of system's security efficient
-				//1- system is totaly incapable for protection
-				//5- none virus can destroy it
+		return security;//value from 1 to 5 of system's security efficient
+						//1- system is totaly incapable for protection
+						//5- none virus can destroy it
 	}
 protected:
 	int security;
@@ -149,11 +148,8 @@ void setMap(int map[quantity][quantity])
 				map[i][j] = map[j][i] = 0;
 		}
 		for(j = 0 ; j < quantity ; j++)//we should check the exsistance of separeted computers
-		{							   //research of 2, 3, 4 separeted groups goes deeper
-									   //in graphs and state machines theory
-									   //generation of Network matrix is extra feature,
-			                           //let's think that we are lucky
-									   //and can restart program if we need to.
+		{						//research of 2, 3, 4 separeted groups goes deep in graphs and state machines theory
+							//generation of Network matrix is extra feature, let's think that we are lucky and can restart program if we need to.
 			if (map[i][j] == 1)
 				k++;
 		}
@@ -191,13 +187,13 @@ int main()
 	
 	OS* comp[quantity];
 	setNetWorkConfig(comp);
-	comp[0]->infection = true;//The black sheep
-	
-	while (systemCheck(comp))
-	{
-		virusAttack(comp, net);
-	}
-
+	//comp[0]->infection = true;//The black sheep
+	//
+	//while (systemCheck(comp))
+	//{
+	//	virusAttack(comp, net);
+	//}
+		delete []comp;
 
 	return 0;
 }
