@@ -6,11 +6,12 @@ int const quantity = 9;
 
 
 class OS{
-public:
-    bool infection;
-	OS() : infection(false)
+protected:
+    bool isInfected;
+    int security;
+	OS() : isInfected(false)
 	{}
-	OS(bool t) : infection(t)
+	OS(bool t) : isInfected(t)
 	{}
 	int getSec()
 	{
@@ -18,8 +19,15 @@ public:
 				//1- system is totaly incapable for protection
 				//5- none virus can destroy it
 	}
-protected:
-	int security;
+	int getInfect()
+	{
+		return isInfected;
+	}
+	setInfection(bool l)
+	{
+		isInfected = l;
+	}
+	
 
 };
 
@@ -28,7 +36,6 @@ class MacOS : public OS {
 public:
 	MacOS() : OS()
 	{
-		infection = false;
 		security = 3;
 	}
 };
@@ -38,7 +45,6 @@ class Linux : public OS {
 public:
 	Linux() : OS()
 	{
-		infection = false;
 		security = 4;
 	}
 };
@@ -48,7 +54,6 @@ class Windows : public OS {
 public:
 	Windows() : OS()
 	{
-		infection = false;
 		security = 2;
 	}
 };
@@ -87,24 +92,25 @@ void setNetWorkConfig(OS* computer[quantity])
 void virusAttack(OS *victim[quantity] , int map[quantity][quantity])
 {
 	srand(int(time(NULL)));
-	int a;
+	int a = 0;
 	for (int i = 0 ; i < quantity ; i++)
 		{
-			if (victim[i]->infection == true)
+			if (!victim[i]->getInfect())
 			{
-				for (int j = 0 ; j < quantity ; j++)
+				continue;
+			}	
+			for (int j = 0 ; j < quantity ; j++)
 				{
-					if (map[i][j] == 1)
-						if (victim[j]->infection == false)
-						{
-							a = rand() % 5 + 1;
-							if  (a >= victim[j]->getSec())
+					if (map[i][j] == 0)
+					{
+						continue;
+					}
+					a = rand() % 5 + 1;
+					if ((!victim[j]->getInfect())&&(a >= victim[j]->getSec()))
 							{
-								victim[j]->infection = true;
+								victim[j]->setInfect(true);
 							} 
-						}
 				}
-			}
 		}
 }
 bool systemCheck(OS *computers[quantity] )
@@ -112,7 +118,7 @@ bool systemCheck(OS *computers[quantity] )
 		int quantityOfVictims = 0;
 		for (int i = 0 ; i < quantity ; i++)
 		{
-			if (computers[i]->infection == true)
+			if (computers[i]->getInfect())
 			{ 
 				quantityOfVictims = quantityOfVictims + 1;
 			}
@@ -131,14 +137,13 @@ bool systemCheck(OS *computers[quantity] )
 
 void setMap(int map[quantity][quantity])
 {
-	int i,j,g,k;
 	srand(time(NULL));
-	for (i = 0 ; i < quantity ; i++)
+	for (int i = 0 ; i < quantity ; i++)
 	{
-		k = 0;
-		for (j = i ; j < quantity ; j++)
+		int k = 0;
+		for (int j = i ; j < quantity ; j++)
 		{
-			g = rand()%100 + 1;
+			int g = rand()%100 + 1;
 			if ((g > 80)&&(i != j))
 			{
 				map[i][j] = map[j][i] = 1;//matrix of cooperation is symmetric
@@ -188,7 +193,7 @@ int main()
 	
 	OS* comp[quantity];
 	setNetWorkConfig(comp);
-	comp[0]->infection = true;//The black sheep
+	comp[0]->setInfect(true);//The black sheep
 	
 	while (systemCheck(comp))
 	{
