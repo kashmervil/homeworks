@@ -1,40 +1,39 @@
-// LocalNetWork.cpp: ���������� ����� ����� ��� ����������� ����������.
-//
-
 #include "stdafx.h"
-int const quantity = 9;
-
-
 class OS{
-protected:
-    bool isInfected;
-    int security;
-	OS() : isInfected(false)
-	{}
-	OS(bool t) : isInfected(t)
-	{}
+public:
 	int getSec()
 	{
 		return security;//value from 1 to 5 of system's security efficient
 				//1- system is totaly incapable for protection
 				//5- none virus can destroy it
 	}
-	int getInfect()
+	bool getInfect()
 	{
 		return isInfected;
 	}
-	setInfection(bool l)
+	void setInfect(bool l)
 	{
 		isInfected = l;
 	}
+	OS() : isInfected(false)
+	{}
+	OS(bool t) : isInfected(t)
+	{}
+protected:
+    bool isInfected;
+    int security;
 	
-
 };
 
 
 class MacOS : public OS {
 public:
 	MacOS() : OS()
+	{
+		isInfected = false;
+		security = 3;
+	}
+	MacOS(bool l) : OS(l)
 	{
 		security = 3;
 	}
@@ -44,6 +43,11 @@ public:
 class Linux : public OS {
 public:
 	Linux() : OS()
+	{
+		isInfected = false;
+		security = 4;
+	}
+	Linux(bool l) : OS(l)
 	{
 		security = 4;
 	}
@@ -56,32 +60,66 @@ public:
 	{
 		security = 2;
 	}
+	Windows(bool l) : OS(l)
+	{
+		security = 2;
+	}
 };
 
-void setNetWorkConfig(OS* computer[quantity])
+class Network {
+public:
+	Network() 
+	{
+		cout<<"\nPut the Quantity of computers in this Network\n";
+		cin>>quantity;
+		comp = new OS[quantity];
+		map = new int*[quantity];
+		for (int i = 0 ; i < quantity ; i++)
+			map[i] = new int[quantity];
+		setNetWorkConfig();
+		setMap();
+
+	}
+	int getQuantity();
+	void setNetWorkConfig();
+	void setMap();
+	void showMap();
+	void virusAttack();
+	void virusAttack(int i,bool l);
+	bool getInfect(int i)
+	{
+		return comp[i].getInfect();
+	}
+	bool networkCheck();
+private:
+	int quantity;
+	OS* comp;
+	int** map;
+};
+void Network::setNetWorkConfig()
 {
 	srand(time(NULL));
 	int j;
 	for (int i = 0 ; i < quantity ; i++)
 	{
-		j = rand()%3 + 1;
 		cout<<"\nComputer #"<<i+1;
+		j = rand()%3 + 1;
 		switch(j){
 		case(1):
 			{
-				computer[i] = new MacOS;
+				comp[i] = new MacOS;
 				cout<<" is Mac";
 				break;
 			}
 		case(2):
 			{
-				computer[i] = new Linux;
+				comp[i] = new Linux;
 				cout<<" is Linux";
 				break;
 			}
 		case(3):
 			{
-				computer[i] = new Windows;
+				comp[i] = new Windows;
 				cout<<" is Windows";
 				break;
 			}
@@ -89,13 +127,13 @@ void setNetWorkConfig(OS* computer[quantity])
 	}
 	cout<<"\n\n";
 }
-void virusAttack(OS *victim[quantity] , int map[quantity][quantity])
+void Network::virusAttack()
 {
 	srand(int(time(NULL)));
 	int a = 0;
 	for (int i = 0 ; i < quantity ; i++)
 		{
-			if (!victim[i]->getInfect())
+			if (!comp[i].getInfect())
 			{
 				continue;
 			}	
@@ -106,19 +144,23 @@ void virusAttack(OS *victim[quantity] , int map[quantity][quantity])
 						continue;
 					}
 					a = rand() % 5 + 1;
-					if ((!victim[j]->getInfect())&&(a >= victim[j]->getSec()))
+					if ((!comp[j].getInfect())&&(a >= comp[j].getSec()))
 							{
-								victim[j]->setInfect(true);
+								comp[j].setInfect(true);
 							} 
 				}
 		}
 }
-bool systemCheck(OS *computers[quantity] )
+void Network::virusAttack(int i,bool l)
+{
+	comp[i].setInfect(l);
+}
+bool Network::networkCheck()
 	{
 		int quantityOfVictims = 0;
 		for (int i = 0 ; i < quantity ; i++)
 		{
-			if (computers[i]->getInfect())
+			if (comp[i].getInfect())
 			{ 
 				quantityOfVictims = quantityOfVictims + 1;
 			}
@@ -134,8 +176,7 @@ bool systemCheck(OS *computers[quantity] )
 		Sleep(3000);
 		return quantityOfVictims != quantity;
 	}
-
-void setMap(int map[quantity][quantity])
+void Network::setMap()
 {
 	srand(time(NULL));
 	for (int i = 0 ; i < quantity ; i++)
@@ -151,7 +192,7 @@ void setMap(int map[quantity][quantity])
 			else
 				map[i][j] = map[j][i] = 0;
 		}
-		for(j = 0 ; j < quantity ; j++)//we should check the exsistance of separeted computers
+		for(int j = 0 ; j < quantity ; j++)//we should check the exsistance of separeted computers
 		{				//research of 2, 3, 4 separeted groups goes deep
 						//in graphs and state machines theory
 						//generation of Network matrix is extra feature, 
@@ -161,16 +202,17 @@ void setMap(int map[quantity][quantity])
 		}
 		if (k == 0)
 		{
+			int r = 0;
 			do
 			{
-				j = rand()%9;
+				r = rand()%quantity;
 			}
-			 while(i == j);
-			map[i][j]=map[j][i] = 1;
+			 while(i == r);
+			map[i][r]=map[r][i] = 1;
 		}
 	}
 }
-void showMap(int map[quantity][quantity])
+void Network::showMap()
 {
 	cout<<"\nCurrent map of cooperation in this network\n";
 	for (int i=0 ; i < quantity ; i++)
@@ -183,23 +225,22 @@ void showMap(int map[quantity][quantity])
 	}
 
 }
+int Network::getQuantity(){
+	return quantity;
+}
+
 
 int main()
 {
-	int net[quantity][quantity];
-	setMap(net);
-	showMap(net);
-
-	
-	OS* comp[quantity];
-	setNetWorkConfig(comp);
-	comp[0]->setInfect(true);//The black sheep
-	
-	while (systemCheck(comp))
+	Network y;
+	y.virusAttack(0,true);//The black sheep
+	y.showMap();
+	for (int i = 0 ; i < y.getQuantity() ; i++)
+		cout<<"comp["<<i+1<<"].isInfected= "<<y.getInfect(i)<<"\n";
+	while (y.networkCheck())
 	{
-		virusAttack(comp, net);
+		y.virusAttack();
 	}
 
 	return 0;
 }
-
