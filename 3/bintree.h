@@ -6,13 +6,12 @@ using namespace std;
 class BinTree
 {
 public:
-    void show();
     BinTree();
     BinTree(int a);
     ~BinTree();
     class Iterator;
     Iterator begin();
-
+    void show();
     void insert(int a);
     BinTree* remove(BinTree *Tree, int a);
     bool has(int a);
