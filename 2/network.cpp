@@ -1,5 +1,19 @@
 #include "network.h"
 
+Network::Network(int testQuant, int **testMap, OS **testConfig)
+{
+    quantity = testQuant;
+    comp = new OS*[quantity];
+    curMap = new MapOfNet(quantity);
+    curMap->setMap(testMap);
+    setNetWorkConfig();
+}
+void Network::setNetWorkConfig(OS **testConfig)
+{
+    comp = testConfig;
+
+}
+
 void Network::setNetWorkConfig()
 {
     srand(time(NULL));
@@ -33,22 +47,21 @@ void Network::setNetWorkConfig()
 }
 void Network::virusAttack()
 {
-    srand(int(time(NULL)));
-    int a = 0;
+
     for (int i = 0 ; i < quantity ; i++)
         {
             if (!comp[i]->getInfect())
             {
                 continue;
             }
+            int a = random->randomize();
             for (int j = 0 ; j < quantity ; j++)
                 {
                     if (curMap->get(i,j) == 0)
                     {
                         continue;
                     }
-                    a = rand() % 5 + 1;
-                    if ((!comp[j]->getInfect())&&(a >= comp[j]->getSec()))
+                    if ((!comp[j]->getInfect())&&(a > comp[j]->getSec()))
                             {
                                 comp[j]->setInfect(true);
                             }
@@ -66,14 +79,14 @@ bool Network::networkCheck()
         {
             if (comp[i]->getInfect())
             {
-                quantityOfVictims = quantityOfVictims + 1;
+                quantityOfVictims += 1;
             }
         }
             cout<<"SystemTest:\n";
             if (quantityOfVictims == 1)
                 cout<<"\n1 -Computer is infected\n\n";
             else
-                if (quantityOfVictims==9)
+                if (quantityOfVictims == quantity)
                      cout<<"\nNetwork is destroyed!!!\n\n";
                 else
                 cout<<"\n"<<quantityOfVictims<<" -Computers are infected\n\n";
@@ -83,4 +96,7 @@ bool Network::networkCheck()
 int Network::getQuantity(){
     return quantity;
 }
-
+void Network::changeRand(RandState *state)
+{
+    random = state;
+}

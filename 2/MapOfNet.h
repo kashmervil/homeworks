@@ -10,6 +10,7 @@ class MapOfNet
 public:
     MapOfNet(int quantity);
     void setMap();
+    void setMap(int **m);
     void showMap();
     int get(int i, int j);
 private:

@@ -42,6 +42,11 @@ void MapOfNet::setMap()
         }
     }
 }
+void MapOfNet::setMap(int** m)
+{
+            map = m;
+}
+
 void MapOfNet::showMap()
 {
     cout<<"\nCurrent map of cooperation in this network\n";
