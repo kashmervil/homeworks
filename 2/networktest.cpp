@@ -20,9 +20,15 @@ void NetWorkTest::setUpTest()
         for (int j = 0; j < 9; j++)
             m[i][j] = map[i][j];
     conf = new OS*[9];
-    conf[0] = conf[3] = conf[6] = new Linux;
-    conf[1] = conf[4] = conf[7] = new MacOS;
-    conf[2] = conf[5] = conf[8] = new Windows;
+    conf[0] = new Linux;
+    conf[1] = new MacOS;
+    conf[2] = new Windows;
+    conf[3] = new Linux;
+    conf[4] = new MacOS;
+    conf[5] = new Windows;
+    conf[6] = new Linux;
+    conf[7] = new MacOS;
+    conf[8] = new Windows;
     testNetwork = new Network(9, m, conf);
 }
 void NetWorkTest::attackTest()
@@ -32,7 +38,7 @@ void NetWorkTest::attackTest()
     testNetwork->virusAttack(0,true);
     testNetwork->virusAttack();
     QVERIFY(!testNetwork->getInfect(1));
-    QVERIFY(testNetwork->getInfect(3));
+    QVERIFY(!testNetwork->getInfect(3));
     r = new TestRand4;//strong enough but not for Linux
     testNetwork->changeRand(r);
     testNetwork->virusAttack();

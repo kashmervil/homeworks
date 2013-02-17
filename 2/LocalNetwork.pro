@@ -17,7 +17,8 @@ TEMPLATE = app
 SOURCES += \
     network.cpp \
     MapOfNet.cpp \
-    networktest.cpp
+    networktest.cpp \
+    main.cpp
 HEADERS += \
     OS.h \
     MacOS.h \
