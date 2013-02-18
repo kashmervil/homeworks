@@ -19,6 +19,5 @@ private:
 
     
 };
-QTEST_MAIN(NetWorkTest)
 
 #endif // NETWORKTEST_H

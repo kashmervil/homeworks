@@ -6,7 +6,7 @@ Network::Network(int testQuant, int **testMap, OS **testConfig)
     comp = new OS*[quantity];
     curMap = new MapOfNet(quantity);
     curMap->setMap(testMap);
-    setNetWorkConfig();
+    setNetWorkConfig(testConfig);
 }
 void Network::setNetWorkConfig(OS **testConfig)
 {

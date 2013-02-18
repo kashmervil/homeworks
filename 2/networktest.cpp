@@ -33,13 +33,13 @@ void NetWorkTest::setUpTest()
 }
 void NetWorkTest::attackTest()
 {
-    RandState *r = new TestRand1;
+    RandState *r = new TestRand<1>;
     testNetwork->changeRand(r);//the weekest virus ever;
     testNetwork->virusAttack(0,true);
     testNetwork->virusAttack();
     QVERIFY(!testNetwork->getInfect(1));
     QVERIFY(!testNetwork->getInfect(3));
-    r = new TestRand4;//strong enough but not for Linux
+    r = new TestRand<4>;//strong enough but not for Linux
     testNetwork->changeRand(r);
     testNetwork->virusAttack();
     QVERIFY(!testNetwork->getInfect(3));

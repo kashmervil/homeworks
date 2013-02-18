@@ -6,7 +6,14 @@
 #include "MapOfNet.h"
 #include "RandState.h"
 using namespace std;
-
+template <int i>
+class TestRand : public RandState {
+public:
+    int randomize()
+    {
+        return i;
+    }
+};
 class TrueRand : public RandState {
 public:
     int randomize()
@@ -15,42 +22,6 @@ public:
         return rand()%5 +1;
     }
 };
-class TestRand1 : public RandState {
-public:
-    int randomize()
-    {
-        return 1;
-    }
-};
-class TestRand2 : public RandState {
-public:
-    int randomize()
-    {
-        return 2;
-    }
-};
-class TestRand3 : public RandState {
-public:
-    int randomize()
-    {
-        return 3;
-    }
-};
-class TestRand4 : public RandState {
-public:
-    int randomize()
-    {
-        return 4;
-    }
-};
-class TestRand5 : public RandState {
-public:
-    int randomize()
-    {
-        return 5;
-    }
-};
-
 class Network {
 public:
     Network()
