@@ -1,2 +1,2 @@
 twoExp :: [Integer]
-twoExp = zipWith (^) (cycle [2]) [1..]
+twoExp = 1: map (*2) twoExp
