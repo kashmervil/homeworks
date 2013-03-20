@@ -1,0 +1,1 @@
+func xs = (foldr (+) 0 xs) / (foldr (*) 1 (map cos xs))

@@ -1,0 +1,1 @@
+primeNum = filter (\x -> all (/=0) (map (mod x) [1..x-1])) [1..]
