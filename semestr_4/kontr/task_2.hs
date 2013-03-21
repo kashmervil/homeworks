@@ -1,6 +1,6 @@
 data Tree a = EmptyTree
             | Node a (Tree a) (Tree a)
-			deriving (Show, Eq) 
+                      deriving (Show, Eq) 
 
 foldt :: ( a -> b -> b) -> b -> Tree a -> b
 foldt _ z EmptyTree = z
