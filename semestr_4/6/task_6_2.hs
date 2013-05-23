@@ -25,7 +25,7 @@ infixr 2 .+
 (.+) :: Polynomnom -> Polynomnom -> Polynomnom
 (.+) = arifm (+)
 
-infixl 2 .-
+infixl 3 .-
 (.-) :: Polynomnom -> Polynomnom -> Polynomnom
 (.-) = arifm (-)
  
