@@ -1,2 +1,2 @@
-Just my homeworks in Faculty of Mathematics and Mechanics
+Just my homeworks at Faculty of Mathematics and Mechanics
 =========
