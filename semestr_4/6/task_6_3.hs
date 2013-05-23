@@ -16,11 +16,16 @@ insert' x (Node (a,l) left right) c
     | x > a  = Node (a,l) left (insert' x right (c+1))
 
 remove :: (Ord a, Num i, Ord i) => a -> Tree (a,i) -> Tree (a,i)
-remove del tree = foldl (flip insert) EmptyTree (filter (\x -> x /= del) (map fst (sortBy (\ x y -> compare (snd x) (snd y)) (foldt (:) [] tree))))
+remove d tree = fromList (delete d (map fst (sortBy (\ x y -> compare (snd x) (snd y)) (toList tree))))
 
+toList :: Tree a -> [a]
+toList tree = foldt (:) [] tree
+
+fromList :: (Ord a, Num i) => [a] -> Tree (a,i) 
+fromList xs = foldl (flip insert) EmptyTree xs
 
 search _          EmptyTree          = Nothing
-search predicate (Node (x:_) left right) = if predicate x
+search predicate (Node (x,c) left right) = if predicate x
                                                     then Just x
                                                 else if leftSearch == Nothing then rightSearch else leftSearch
                                                 where leftSearch = search predicate left
