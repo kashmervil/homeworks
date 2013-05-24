@@ -5,23 +5,18 @@ data Expr = C Int
            |Pow Expr Int
            deriving (Show)
 infixl 3 .+
-
 e1 .+ e2 = Add e1 e2
 
 infixl 4 .-
-
 e1 .- e2 = Add e1 ((C (-1)) .* e2)
 
 infixl 5 .*
-
 e1 .* e2 = Mul e1 e2
 
 infixl 5 ./
-
 e1 ./ e2 = Mul e1 (e2 .^ (-1))
 
 infixr 8 .^
-
 e1 .^ k = Pow e1 k
 
 (!) :: Expr -> Expr
@@ -35,6 +30,7 @@ e1 .^ k = Pow e1 k
 (!) (Mul e1 e2) =  ((!) e1) .* ((!) e2)  .+  ((!) e1) .* ((!) e2)
 
 (!) (Pow e1 k)  =  (C k) .* e1 .^ (k-1) .* ((!) e1)
+
 simplyfy :: Expr -> Expr
 simplyfy (Add (C x) (C y)) = C (x+y)
 simplyfy (Mul (C x) (C y)) = C (x*y)
