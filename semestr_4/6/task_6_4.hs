@@ -1,23 +1,26 @@
- Graph = Graph [Int] [((Int, Int), Int)]
+import Data.List
+import Control.Monad
+import Data.Maybe
+
+data Graph = Graph [Int] [((Int, Int), Int)]
 
 type Path = (Int,Int,Int)
-    deriving (Show, Eq)
 
 instance Ord Path where
     compare (_,x,_) (_,y,_) = compare x y
 
 dijkstra :: Int -> Graph -> [Path]
-dijkstra Int (Graph vs es) = helper firstStep
+dijkstra s (Graph vs es) = helper firstStep
     where firstStep :: [Path]
-          firstStep = (map (\v -> (v,(if v == s then 0 else 1/0),v) []
+          firstStep = map (\v -> (v,(if v == s then 0 else 1/0),v)) []
           helper :: [Path] -> [Path] -> [Path]
           helper [] vs = vs
-          helper rest visited = helper newRest newVisited
-                where nearestVertex = minimum rest
-                      newVisited = nearestVertex : visited
-                      nRest = (map (\p -> min p (makePathThrough nearestVertex p)) . delete nearestVertex) rest
-                      makePath (Path (nrstId, nrDist _) (Path pId _ _) = Path pId ((rage nrstId pId) + nrDist) nrstId
-          rage ver ver' = if temp == Nothing then 1/0       
-                                                    else fromJust temp
-          temp = lookup (ver,ver') es
+          helper rest visited =
+              let nearest = minimum rest
+                  newVisited = nearest : visited
+                  nRest = (map (\p -> min p (makePath nearest p)) . delete nearest) rest
+                  makePath (nrstId, nrDist,_) (pId,_,_) = (pId, ((rage nrstId pId) + nrDist), nrstId)
+              in  helper nRest newVisited
+          rage ver ver' = if (lookup (ver,ver') es) == Nothing then 1/0
+                                                    else fromJust (lookup (ver,ver') es)
 
